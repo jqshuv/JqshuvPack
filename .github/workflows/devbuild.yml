@@ -10,9 +10,9 @@ on:
 
 jobs:
 
-  build_18:
+  build_19:
 
-    name: 🪴 Build 1.18
+    name: 🐸 Build 1.19
 
     runs-on: ubuntu-latest
 
@@ -36,9 +36,37 @@ jobs:
             pack.png 
             credits.md
 
+  build_18:
+
+    name: 🪨 Build 1.18
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔁 Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: 'ver/1.18'
+
+      - name: 📦 ZIP
+        uses: papeloto/action-zip@v1
+        with:
+          files: assets/ pack.mcmeta pack.png credits.md
+          dest: pack.zip
+      
+      - name: 🏹 Upload
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: JqshuvPack-1.18.X
+          path: |
+            assets/
+            pack.mcmeta 
+            pack.png 
+            credits.md
+
   build_17:
   
-    name: 🪴 Build 1.17
+    name: 🐐 Build 1.17
 
     runs-on: ubuntu-latest
 
@@ -47,6 +75,34 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: 'ver/1.17'
+
+      - name: 📦 ZIP
+        uses: papeloto/action-zip@v1
+        with:
+          files: assets/ pack.mcmeta pack.png credits.md
+          dest: pack.zip
+      
+      - name: 🏹 Upload
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: JqshuvPack-1.17.X
+          path: |
+            assets/
+            pack.mcmeta 
+            pack.png 
+            credits.md
+
+  build_16:
+  
+    name: 🐷 Build 1.16
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔁 Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: 'ver/1.16'
 
       - name: 📦 ZIP
         uses: papeloto/action-zip@v1
