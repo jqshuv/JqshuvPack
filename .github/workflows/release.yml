@@ -110,7 +110,7 @@ jobs:
 
   release-github:
     runs-on: ubuntu-latest
-    needs: [build_old, build_19, changelog, getinfo]
+    needs: [build_old, build_19, zip_build, changelog, getinfo]
     name: "🐙 Release to Github"
     steps:
       - name: "🔽 Download Packs"
