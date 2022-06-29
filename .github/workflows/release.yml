@@ -93,20 +93,20 @@ jobs:
         version: [1.16, 1.17, 1.18, 1.19]
     steps:
       - name: "🔽 Download Packs"
-          uses: actions/download-artifact@v2
-          with:
-            name: JqshuvPack-${{ matrix.version }}.X
-            path: temp-${{ matrix.version }}
+        uses: actions/download-artifact@v2
+        with:
+          name: JqshuvPack-${{ matrix.version }}.X
+          path: temp-${{ matrix.version }}
       - name: 📦 ZIP
-          uses: vimtor/action-zip@v1
-          with:
-            files: temp-${{ matrix.version }}/*
-            dest: JqshuvPack-${{ matrix.version }}.X.zip
+        uses: vimtor/action-zip@v1
+        with:
+          files: temp-${{ matrix.version }}/*
+          dest: JqshuvPack-${{ matrix.version }}.X.zip
       - name: 🏹 Upload
-          uses: actions/upload-artifact@v2.3.1
-          with:
-            name: JqshuvPack-${{ matrix.version }}.X
-            path: packs
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: JqshuvPack-${{ matrix.version }}.X
+          path: packs
 
   release-github:
     runs-on: ubuntu-latest
