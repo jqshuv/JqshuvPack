@@ -106,7 +106,7 @@ jobs:
         uses: actions/upload-artifact@v2.3.1
         with:
           name: JqshuvPack-${{ matrix.version }}.X
-          path: packs
+          path: temp-${{ matrix.version }}
 
   release-github:
     runs-on: ubuntu-latest
