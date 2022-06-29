@@ -1,0 +1,64 @@
+# Copyright (c) 2022 Joshua Schmitt
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+name: Bug Report
+description: Create a report to help us improve
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - octocat
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: "A bug happened!"
+    validations:
+      required: true
+  - type: textarea
+    id: to-reproduce
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the bug.
+      placeholder: Go to '...'
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of our software are you running?
+      options:
+        - 1.0.X (Frog)
+    validations:
+      required: true
+  - type: dropdown
+    id: mc-version
+    attributes:
+      label: In what Minecraft Versions do you seeing the bug?
+      multiple: true
+      options:
+        - 1.19.X
+        - 1.18.X
+        - 1.17.X
+        - 1.16.X
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
