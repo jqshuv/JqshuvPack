@@ -16,111 +16,71 @@ on:
 jobs:
 
   build_19:
-
     name: 🐸 Build 1.19
-
     runs-on: ubuntu-latest
-
     steps:
       - name: 🔁 Checkout
         uses: actions/checkout@v2
-
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
           files: assets/ pack.mcmeta pack.png credits.md
           dest: pack.zip
-      
       - name: 🏹 Upload
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: JqshuvPack-1.18.X
+          name: JqshuvPack-1.19.X
           path: |
             assets/
             pack.mcmeta 
             pack.png 
             credits.md
 
-  build_18:
-
-    name: 🪨 Build 1.18
-
+  build_old:
+    name: 🐐 Build Old
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        version: [1.16, 1.17, 1.18]
     steps:
       - name: 🔁 Checkout
         uses: actions/checkout@v2
         with:
-          ref: 'ver/1.18'
-
+          ref: 'ver/${{ matrix.version }}'
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
           files: assets/ pack.mcmeta pack.png credits.md
           dest: pack.zip
-      
       - name: 🏹 Upload
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: JqshuvPack-1.18.X
+          name: JqshuvPack-${{ matrix.version }}.X
           path: |
             assets/
             pack.mcmeta 
             pack.png 
             credits.md
 
-  build_17:
-  
-    name: 🐐 Build 1.17
-
+  zip_build:
+    name: "📭 Build ZIP Release"
+    needs: [build_old, build_19]
     runs-on: ubuntu-latest
-
-    steps:
-      - name: 🔁 Checkout
-        uses: actions/checkout@v2
+    strategy:
+      matrix:
+        version: [1.16, 1.17, 1.18, 1.19]
+    - name: "🔽 Download Packs"
+        uses: actions/download-artifact@v2
         with:
-          ref: 'ver/1.17'
-
-      - name: 📦 ZIP
+          name: JqshuvPack-${{ matrix.version }}.X
+          path: temp-${{ matrix.version }}
+    - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
-          files: assets/ pack.mcmeta pack.png credits.md
-          dest: pack.zip
-      
-      - name: 🏹 Upload
+          files: temp-${{ matrix.version }}/*
+          dest: JqshuvPack-${{ matrix.version }}.X.zip
+    - name: 🏹 Upload
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: JqshuvPack-1.17.X
-          path: |
-            assets/
-            pack.mcmeta 
-            pack.png 
-            credits.md
-
-  build_16:
-  
-    name: 🐷 Build 1.16
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 🔁 Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: 'ver/1.16'
-
-      - name: 📦 ZIP
-        uses: vimtor/action-zip@v1
-        with:
-          files: assets/ pack.mcmeta pack.png credits.md
-          dest: pack.zip
-      
-      - name: 🏹 Upload
-        uses: actions/upload-artifact@v2.3.1
-        with:
-          name: JqshuvPack-1.17.X
-          path: |
-            assets/
-            pack.mcmeta 
-            pack.png 
-            credits.md
+          name: JqshuvPack-${{ matrix.version }}.X
+          path: packs

@@ -84,7 +84,7 @@ jobs:
             pack.png 
             credits.md
 
-  build_zip:
+  zip_build:
     name: "📭 Build ZIP Release"
     needs: [build_old, build_19]
     runs-on: ubuntu-latest
