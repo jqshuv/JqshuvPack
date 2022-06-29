@@ -124,6 +124,7 @@ jobs:
           case "${{ needs.getinfo.outputs.tag }}" in
             *alpha*) rel_type="true" ;;
             *beta*) rel_type="true" ;;
+            *rc**) rel_type="true" ;;
             *) rel_type="false" ;;
           esac
           echo "::set-output name=type::$rel_type"
