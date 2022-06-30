@@ -83,5 +83,5 @@ jobs:
       - name: 🏹 Upload
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: JqshuvPack-${{ matrix.version }}.X.zip
-          path: packs
+          name: packs
+          path: JqshuvPack-${{ matrix.version }}.X.zip
