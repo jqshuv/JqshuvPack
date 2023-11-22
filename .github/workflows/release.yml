@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19, 1.20]
+        version: [1.16, 1.17, 1.18, 1.19, "1.20"]
     steps:
       - name: "🔽 Download Packs"
         uses: actions/download-artifact@v3
