@@ -97,7 +97,7 @@ jobs:
 
   zip_build:
     name: "📭 Build ZIP Release"
-    needs: [build_old, build_19]
+    needs: [build_old, build_20]
     runs-on: ubuntu-latest
     strategy:
       matrix:
