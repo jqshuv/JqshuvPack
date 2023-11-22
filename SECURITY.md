@@ -2,26 +2,26 @@
 
 ## Supported Pack Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Currently we support following versions of the resource pack.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.X   | :white_check_mark: |
+| 1.1.X   | :white_check_mark: |
+| 1.0.X   | :x: |
 
 ## Supported Minecraft Versions
 
-Use this section to tell people about which minecraft versions are currently
-being supported with security updates.
+Currently we support following Minecraft versions.
 
 | Version | Supported          |
 | ------- | ------------------ |
+| 1.20.X   | :white_check_mark: |
 | 1.19.X   | :white_check_mark: |
 | 1.18.X   | :white_check_mark: |
 | 1.17.X   | :white_check_mark: |
 | 1.16.X   | :white_check_mark: |
-| 1.15.X   | :x: |
-| 1.14.X   | :x: |
+| 1.15.X   | :warning: |
+| 1.14.X   | :warning: |
 | 1.13.X   | :x: |
 | 1.12.X   | :x: |
 | 1.11.X   | :x: |

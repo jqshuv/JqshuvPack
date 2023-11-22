@@ -14,13 +14,14 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  build_19:
-    name: 🐸 Build 1.19
+  build_20:
+    name: 🐸 Build 1.20
     runs-on: ubuntu-latest
     steps:
       - name: 🔁 Checkout
         uses: actions/checkout@v2
+      - name: 💾 Update config.json
+        run: echo "`jq '.pack.pack_format="18"' pack.mcmeta`" > pack.mcmeta
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
@@ -29,7 +30,7 @@ jobs:
       - name: 🏹 Upload
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: JqshuvPack-1.19.X
+          name: JqshuvPack-1.20.X
           path: |
             assets/
             pack.mcmeta 
@@ -41,12 +42,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18]
+        version: [1.16, 1.17, 1.18, 1.19]
+        include:
+          - version: 1.16
+            pack_version: 6
+          - version: 1.17
+            pack_version: 7
+          - version: 1.18
+            pack_version: 8
+          - version: 1.19
+            pack_version: 13
     steps:
       - name: 🔁 Checkout
         uses: actions/checkout@v2
         with:
           ref: 'ver/${{ matrix.version }}'
+      - name: 💾 Update config.json
+        run: echo "`jq '.pack.pack_format="${{ matrix.pack_version }}"' pack.mcmeta`" > pack.mcmeta
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
