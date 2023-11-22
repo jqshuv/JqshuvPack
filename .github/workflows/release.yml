@@ -18,7 +18,7 @@ jobs:
     name: "📙 Modpack Info"
     steps:
       - name: "🔁 Checkout"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: "📛 Get tag"
         id: version
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
@@ -30,28 +30,28 @@ jobs:
       changelog: ${{steps.changelog.outputs.changelog}}
     steps:
       - name: "🔁 Checkout"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: "🗒️ Build Changelog"
         id: changelog
-        uses: mikepenz/release-changelog-builder-action@v3.0.1
+        uses: mikepenz/release-changelog-builder-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN }}
 
-  build_19:
-    name: 🐸 Build 1.19
+  build_20:
+    name: 🐸 Build 1.20
     runs-on: ubuntu-latest
     steps:
       - name: 🔁 Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
           files: assets/ pack.mcmeta pack.png credits.md
           dest: pack.zip
       - name: 🏹 Upload
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3
         with:
-          name: JqshuvPack-1.19.X
+          name: JqshuvPack-1.20.X
           path: |
             assets/
             pack.mcmeta 
@@ -63,19 +63,30 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18]
+        version: [1.16, 1.17, 1.18, 19]
+        include:
+          - version: 1.16
+            pack_version: 6
+          - version: 1.17
+            pack_version: 7
+          - version: 1.18
+            pack_version: 8
+          - version: 1.19
+            pack_version: 13
     steps:
       - name: 🔁 Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: 'ver/${{ matrix.version }}'
+      - name: 💾 Update config.json
+        run: echo "`jq '.pack.pack_format="${{ matrix.pack_version }}"' pack.mcmeta`" > pack.mcmeta
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
           files: assets/ pack.mcmeta pack.png credits.md
           dest: pack.zip
       - name: 🏹 Upload
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3
         with:
           name: JqshuvPack-${{ matrix.version }}.X
           path: |
@@ -90,27 +101,27 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19]
+        version: [1.16, 1.17, 1.18, 1.19, 1.20]
     steps:
       - name: "🔽 Download Packs"
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: JqshuvPack-${{ matrix.version }}.X
       - name: 📦 ZIP
         run: zip -r JqshuvPack-${{ matrix.version }}.X.zip *
       - name: 🏹 Upload
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3
         with:
           name: packs
           path: JqshuvPack-${{ matrix.version }}.X.zip
 
   release-github:
     runs-on: ubuntu-latest
-    needs: [build_old, build_19, zip_build, changelog, getinfo]
+    needs: [build_old, build_20, zip_build, changelog, getinfo]
     name: "🐙 Release to Github"
     steps:
       - name: "🔽 Download Packs"
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: packs
       - name: "🐍 Get release type"
@@ -134,4 +145,5 @@ jobs:
             JqshuvPack-1.17.X.zip
             JqshuvPack-1.18.X.zip
             JqshuvPack-1.19.X.zip
+            JqshuvPack-1.20.X.zip
           token: ${{ secrets.PROFILE_TOKEN }}
