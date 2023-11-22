@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🔁 Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: 💾 Update config.json
         run: echo "`jq '.pack.pack_format="18"' pack.mcmeta`" > pack.mcmeta
       - name: 📦 ZIP
@@ -28,7 +28,7 @@ jobs:
           files: assets/ pack.mcmeta pack.png credits.md
           dest: pack.zip
       - name: 🏹 Upload
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3
         with:
           name: JqshuvPack-1.20.X
           path: |
@@ -54,7 +54,7 @@ jobs:
             pack_version: 13
     steps:
       - name: 🔁 Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: 'ver/${{ matrix.version }}'
       - name: 💾 Update config.json
@@ -65,7 +65,7 @@ jobs:
           files: assets/ pack.mcmeta pack.png credits.md
           dest: pack.zip
       - name: 🏹 Upload
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3
         with:
           name: JqshuvPack-${{ matrix.version }}.X
           path: |
@@ -83,7 +83,7 @@ jobs:
         version: [1.16, 1.17, 1.18, 1.19]
     steps:
       - name: "🔽 Download Packs"
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: JqshuvPack-${{ matrix.version }}.X
           path: temp-${{ matrix.version }}
@@ -93,7 +93,7 @@ jobs:
           files: temp-${{ matrix.version }}/*
           dest: JqshuvPack-${{ matrix.version }}.X.zip
       - name: 🏹 Upload
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3
         with:
           name: packs
           path: JqshuvPack-${{ matrix.version }}.X.zip
