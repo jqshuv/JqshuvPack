@@ -146,4 +146,4 @@ jobs:
             JqshuvPack-1.18.X.zip
             JqshuvPack-1.19.X.zip
             JqshuvPack-1.20.X.zip
-          token: ${{ secrets.PROFILE_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
