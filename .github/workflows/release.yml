@@ -38,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN }}
 
   build_20:
-    name: 🐸 Build 1.20
+    name: 🐸 Build 1.21
     runs-on: ubuntu-latest
     steps:
       - name: 🔁 Checkout
@@ -51,7 +51,7 @@ jobs:
       - name: 🏹 Upload
         uses: actions/upload-artifact@v3
         with:
-          name: JqshuvPack-1.20.X
+          name: JqshuvPack-1.21.X
           path: |
             assets/
             pack.mcmeta 
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19]
+        version: [1.16, 1.17, 1.18, 1.19, 1.20]
         include:
           - version: 1.16
             pack_version: 6
@@ -73,6 +73,8 @@ jobs:
             pack_version: 8
           - version: 1.19
             pack_version: 13
+          - version: 1.20
+            pack_version: 34
     steps:
       - name: 🔁 Checkout
         uses: actions/checkout@v4
@@ -101,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19, "1.20"]
+        version: [1.16, 1.17, 1.18, 1.19, "1.20", "1.21"]
     steps:
       - name: "🔽 Download Packs"
         uses: actions/download-artifact@v3
@@ -146,4 +148,5 @@ jobs:
             JqshuvPack-1.18.X.zip
             JqshuvPack-1.19.X.zip
             JqshuvPack-1.20.X.zip
+            JqshuvPack-1.21.X.zip
           token: ${{ secrets.GITHUB_TOKEN }}
