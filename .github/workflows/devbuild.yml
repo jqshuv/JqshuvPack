@@ -82,7 +82,7 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: temp-${{ matrix.version }}/*
-          dest: JqshuvPack-${{ matrix.version }}.X.zip
+          dest: JqshuvPack2-${{ matrix.version }}.X.zip
       #- name: 🏹 Upload
       #  uses: actions/upload-artifact@v4
       #  with:
