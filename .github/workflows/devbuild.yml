@@ -45,7 +45,7 @@ jobs:
         uses: ComunidadAylas/PackSquash-action@v4
         with:
           packsquash_version: latest
-          artifact_name: JqshuvPack-${{ matrix.version }}.X
+          artifact_name: PackTemporary-${{ matrix.version }}.X
           options: |
             pack_directory = '.'
             output_file_path = '/tmp/pack.zip'
@@ -74,20 +74,25 @@ jobs:
       matrix:
         version: [1.16, 1.17, 1.18, 1.19, "1.20"]
     steps:
-      - name: "🔽 Download Packs"
+      - name: 🔽 Download Packs
         uses: actions/download-artifact@v4
         with:
-          name: JqshuvPack-${{ matrix.version }}.X
+          name: PackTemporary-${{ matrix.version }}.X
           path: temp-${{ matrix.version }}
+
+      - name: 🌴 Unzip
+        run: |
+          unzip temp-${{ matrix.version }}/pack.zip -d temp-${{ matrix.version }}
+          rm temp-${{ matrix.version }}/pack.zip
 
       - name: List Files
         run: ls -R temp-${{ matrix.version }}
-        
+
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
-          files: temp-${{ matrix.version }}/pack/*
-          dest: JqshuvPack2-${{ matrix.version }}.X.zip
+          files: temp-${{ matrix.version }}/*
+          dest: JqshuvPack-${{ matrix.version }}.X.zip
       #- name: 🏹 Upload
       #  uses: actions/upload-artifact@v4
       #  with:
