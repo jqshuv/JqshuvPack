@@ -52,6 +52,7 @@ jobs:
             pack_directory = '.'
             output_file_path = '/tmp/pack.zip'
             ignore_system_and_hidden_files = false
+            never_store_squash_times = true
 
   #     - name: 📦 ZIP
   #       uses: vimtor/action-zip@v1
