@@ -45,7 +45,7 @@ jobs:
         uses: ComunidadAylas/PackSquash-action@v4
         with:
           packsquash_version: latest
-          artifact_name: JqshuvPack-${{ matrix.pack_version }}.X
+          artifact_name: JqshuvPack-${{ matrix.version }}.X
           options: |
             pack_directory = '.'
             output_file_path = '/tmp/pack.zip'
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19, 1.20]
+        version: [1.16, 1.17, 1.18, 1.19, "1.20"]
     steps:
       - name: "🔽 Download Packs"
         uses: actions/download-artifact@v4
