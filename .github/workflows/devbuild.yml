@@ -49,6 +49,7 @@ jobs:
           options: |
             pack_directory = '.'
             output_file_path = '/tmp/pack.zip'
+            ignore_system_and_hidden_files = false
 
   #     - name: 📦 ZIP
   #       uses: vimtor/action-zip@v1
@@ -78,10 +79,14 @@ jobs:
         with:
           name: JqshuvPack-${{ matrix.version }}.X
           path: temp-${{ matrix.version }}
+
+      - name: List Files
+        run: ls -R temp-${{ matrix.version }}
+        
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
-          files: temp-${{ matrix.version }}/*
+          files: temp-${{ matrix.version }}/pack/*
           dest: JqshuvPack2-${{ matrix.version }}.X.zip
       #- name: 🏹 Upload
       #  uses: actions/upload-artifact@v4
