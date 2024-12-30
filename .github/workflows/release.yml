@@ -68,15 +68,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: 'ver/${{ matrix.version }}'
-
-      
       - name: 🔁 Checkout
         if: ${{ matrix.latest == true }}
         uses: actions/checkout@v4
-        with:
-          ref: 'ver/${{ matrix.version }}'
-
-
       - name: 💾 Update config.json
         run: echo "`jq '.pack.pack_format=${{ matrix.pack_version }}' pack.mcmeta`" > pack.mcmeta
       - name: 📦 ZIP
