@@ -139,3 +139,42 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           prerelease: ${{ steps.release-type.outputs.type }}
           file: JqshuvPack-${{ matrix.version }}.X.zip
+
+  release-modrinth:
+    runs-on: ubuntu-latest
+    needs: [build, changelog, getinfo]
+    name: "🐲 Release to Modrinth"
+    strategy:
+      matrix:
+        version: [1.16, 1.17, 1.18, 1.19, "1.20", 1.21]
+    steps:
+      - name: "🔽 Download Packs"
+        uses: actions/download-artifact@v3
+        with:
+          name: JqshuvPack-${{ matrix.version }}.X
+      - name: 📦 ZIP
+        run: zip -r JqshuvPack-${{ matrix.version }}.X.zip *
+      - name: "🐍 Get release type"
+        id: release-type
+        run: |
+          rel_type="release"
+          case "${{ needs.getinfo.outputs.tag }}" in
+            *alpha*) rel_type="alpha" ;;
+            *beta*) rel_type="beta" ;;
+            *rc**) rel_type="beta" ;;
+            *) rel_type="false" ;;
+          esac
+          echo "::set-output name=type::$rel_type"
+      - name: "🧬 Create release"
+        uses: cloudnode-pro/modrinth-publish@2.0.0
+        with:
+          project: r4SmPOJL
+          name: ${{ needs.getinfo.outputs.tag }}
+          changelog: ${{ steps.changelog.outputs.changelog }}
+          version:  ${{ needs.getinfo.outputs.tag }}
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          game-versions: ${{ matrix.version }}
+          channel: ${{ steps.release-type.outputs.type }}
+          files: JqshuvPack-${{ matrix.version }}.X.zip
+          loaders: minecraft
+
