@@ -46,21 +46,37 @@ jobs:
         include:
           - version: 1.16
             pack_version: 6
+            latest: false
           - version: 1.17
             pack_version: 7
+            latest: false
           - version: 1.18
             pack_version: 8
+            latest: false
           - version: 1.19
             pack_version: 13
+            latest: false
           - version: 1.20
             pack_version: 32
+            latest: false
           - version: 1.21
             pack_version: 46
+            latest: true
     steps:
       - name: 🔁 Checkout
+        if: ${{ matrix.latest == false }}
         uses: actions/checkout@v4
         with:
           ref: 'ver/${{ matrix.version }}'
+
+      
+      - name: 🔁 Checkout
+        if: ${{ matrix.latest == true }}
+        uses: actions/checkout@v4
+        with:
+          ref: 'ver/${{ matrix.version }}'
+
+
       - name: 💾 Update config.json
         run: echo "`jq '.pack.pack_format=${{ matrix.pack_version }}' pack.mcmeta`" > pack.mcmeta
       - name: 📦 ZIP
