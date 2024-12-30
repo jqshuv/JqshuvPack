@@ -15,11 +15,11 @@ on:
 
 jobs:
   build:
-    name: 🐐 Build Old
+    name: 🐐 Build
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19, 1.20]
+        version: [1.16, 1.17, 1.18, 1.19, "1.20"]
         include:
           - version: 1.16
             pack_version: 6
@@ -29,7 +29,7 @@ jobs:
             pack_version: 8
           - version: 1.19
             pack_version: 13
-          - version: 1.20
+          - version: "1.20"
             pack_version: 18
     steps:
       - name: 🔁 Checkout
