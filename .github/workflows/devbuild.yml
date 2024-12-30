@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 💾 Update config.json
-        run: echo "`jq '.pack.pack_format="18"' pack.mcmeta`" > pack.mcmeta
+        run: echo "`jq '.pack.pack_format=18' pack.mcmeta`" > pack.mcmeta
 
       - name: Run PackSquash
         uses: ComunidadAylas/PackSquash-action@v4
