@@ -14,45 +14,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_20:
-    name: 🐸 Build 1.20
-    runs-on: ubuntu-24.04
-    steps:
-      - name: 🔁 Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 💾 Update config.json
-        run: echo "`jq '.pack.pack_format=18' pack.mcmeta`" > pack.mcmeta
-
-      - name: Run PackSquash
-        uses: ComunidadAylas/PackSquash-action@v4
-        with:
-          packsquash_version: latest
-          options: |
-            pack_directory = '.'
-            output_file_path = '/tmp/pack.zip'
-            artifact_name = 'JqshuvPack-1.20.X'
-
-      # - name: 📦 ZIP
-      #   uses: vimtor/action-zip@v1
-      #   with:
-      #     files: assets/ pack.mcmeta pack.png credits.md
-      #     dest: pack.zip
-      # - name: 🏹 Upload
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: JqshuvPack-1.20.X
-      #     path: |
-      #       /tmp/pack.zip
-
-  build_old:
+  build:
     name: 🐐 Build Old
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19]
+        version: [1.16, 1.17, 1.18, 1.19, 1.20]
         include:
           - version: 1.16
             pack_version: 6
@@ -62,6 +29,8 @@ jobs:
             pack_version: 8
           - version: 1.19
             pack_version: 13
+          - version: 1.20
+            pack_version: 18
     steps:
       - name: 🔁 Checkout
         uses: actions/checkout@v4
@@ -72,15 +41,14 @@ jobs:
       - name: 💾 Update config.json
         run: echo "`jq '.pack.pack_format=${{ matrix.pack_version }}' pack.mcmeta`" > pack.mcmeta
 
-      
       - name: Run PackSquash
         uses: ComunidadAylas/PackSquash-action@v4
         with:
           packsquash_version: latest
+          artifact_name: JqshuvPack-${{ matrix.pack_version }}.X
           options: |
             pack_directory = '.'
             output_file_path = '/tmp/pack.zip'
-            artifact_name = 'JqshuvPack-${{ matrix.pack_version }}.X'
 
   #     - name: 📦 ZIP
   #       uses: vimtor/action-zip@v1
@@ -99,7 +67,7 @@ jobs:
 
   zip_build:
     name: "📭 Build ZIP Release"
-    needs: [build_old, build_20]
+    needs: [build]
     runs-on: ubuntu-24.04
     strategy:
       matrix:
