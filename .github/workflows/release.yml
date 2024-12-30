@@ -162,7 +162,7 @@ jobs:
             *alpha*) rel_type="alpha" ;;
             *beta*) rel_type="beta" ;;
             *rc**) rel_type="beta" ;;
-            *) rel_type="false" ;;
+            *) rel_type="release" ;;
           esac
           echo "::set-output name=type::$rel_type"
       - name: "🧬 Create release"
