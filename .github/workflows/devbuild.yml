@@ -43,7 +43,7 @@ jobs:
         with:
           name: JqshuvPack-1.20.X
           path: |
-            pack.zip
+            /tmp/pack.zip
 
   # build_old:
   #   name: 🐐 Build Old
