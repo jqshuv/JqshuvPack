@@ -37,33 +37,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN }}
 
-  build_20:
-    name: 🐸 Build 1.21
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🔁 Checkout
-        uses: actions/checkout@v4
-      - name: 📦 ZIP
-        uses: vimtor/action-zip@v1
-        with:
-          files: assets/ pack.mcmeta pack.png credits.md
-          dest: pack.zip
-      - name: 🏹 Upload
-        uses: actions/upload-artifact@v3
-        with:
-          name: JqshuvPack-1.21.X
-          path: |
-            assets/
-            pack.mcmeta 
-            pack.png 
-            credits.md
-
-  build_old:
+  build:
     name: 🐐 Build Old
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19, "1.20"]
+        version: [1.16, 1.17, 1.18, 1.19, "1.20", 1.21]
         include:
           - version: 1.16
             pack_version: 6
@@ -74,14 +53,16 @@ jobs:
           - version: 1.19
             pack_version: 13
           - version: 1.20
-            pack_version: 34
+            pack_version: 32
+          - version: 1.21
+            pack_version: 46
     steps:
       - name: 🔁 Checkout
         uses: actions/checkout@v4
         with:
           ref: 'ver/${{ matrix.version }}'
       - name: 💾 Update config.json
-        run: echo "`jq '.pack.pack_format="${{ matrix.pack_version }}"' pack.mcmeta`" > pack.mcmeta
+        run: echo "`jq '.pack.pack_format=${{ matrix.pack_version }}' pack.mcmeta`" > pack.mcmeta
       - name: 📦 ZIP
         uses: vimtor/action-zip@v1
         with:
@@ -97,13 +78,33 @@ jobs:
             pack.png 
             credits.md
 
-  zip_build:
-    name: "📭 Build ZIP Release"
-    needs: [build_old, build_20]
+  # zip_build:
+  #   name: "📭 Build ZIP Release"
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       version: [1.16, 1.17, 1.18, 1.19, "1.20", 1.21]
+  #   steps:
+  #     - name: "🔽 Download Packs"
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: JqshuvPack-${{ matrix.version }}.X
+  #     - name: 📦 ZIP
+  #       run: zip -r JqshuvPack-${{ matrix.version }}.X.zip *
+  #     - name: 🏹 Upload
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: packs
+  #         path: JqshuvPack-${{ matrix.version }}.X.zip
+
+  release-github:
     runs-on: ubuntu-latest
+    needs: [build, changelog, getinfo]
+    name: "🐙 Release to Github"
     strategy:
       matrix:
-        version: [1.16, 1.17, 1.18, 1.19, "1.20", "1.21"]
+        version: [1.16, 1.17, 1.18, 1.19, "1.20", 1.21]
     steps:
       - name: "🔽 Download Packs"
         uses: actions/download-artifact@v3
@@ -111,21 +112,6 @@ jobs:
           name: JqshuvPack-${{ matrix.version }}.X
       - name: 📦 ZIP
         run: zip -r JqshuvPack-${{ matrix.version }}.X.zip *
-      - name: 🏹 Upload
-        uses: actions/upload-artifact@v3
-        with:
-          name: packs
-          path: JqshuvPack-${{ matrix.version }}.X.zip
-
-  release-github:
-    runs-on: ubuntu-latest
-    needs: [build_old, build_20, zip_build, changelog, getinfo]
-    name: "🐙 Release to Github"
-    steps:
-      - name: "🔽 Download Packs"
-        uses: actions/download-artifact@v3
-        with:
-          name: packs
       - name: "🐍 Get release type"
         id: release-type
         run: |
@@ -138,15 +124,8 @@ jobs:
           esac
           echo "::set-output name=type::$rel_type"
       - name: "🧬 Create release"
-        uses: softprops/action-gh-release@v1
+        uses: svenstaro/upload-release-action@v2
         with:
-          body_path: ${{ steps.changelog.outputs.changelog }}
+          body: ${{ steps.changelog.outputs.changelog }}
           prerelease: ${{ steps.release-type.outputs.type }}
-          files: |
-            JqshuvPack-1.16.X.zip
-            JqshuvPack-1.17.X.zip
-            JqshuvPack-1.18.X.zip
-            JqshuvPack-1.19.X.zip
-            JqshuvPack-1.20.X.zip
-            JqshuvPack-1.21.X.zip
-          token: ${{ secrets.GITHUB_TOKEN }}
+          file: JqshuvPack-${{ matrix.version }}.X.zip
