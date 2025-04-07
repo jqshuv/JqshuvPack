@@ -166,7 +166,7 @@ jobs:
           esac
           echo "::set-output name=type::$rel_type"
       - name: "🧬 Create release"
-        uses: cloudnode-pro/modrinth-publish@2.0.0
+        uses: cloudnode-pro/modrinth-publish@v2
         with:
           project: r4SmPOJL
           name: ${{ needs.getinfo.outputs.tag }}
