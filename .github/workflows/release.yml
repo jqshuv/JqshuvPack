@@ -173,7 +173,7 @@ jobs:
           changelog: ${{ steps.changelog.outputs.changelog }}
           version:  ${{ needs.getinfo.outputs.tag }}
           token: ${{ secrets.MODRINTH_TOKEN }}
-          game-versions: ${{ matrix.version }}
+          game-versions: ${{ matrix.version }}.x
           channel: ${{ steps.release-type.outputs.type }}
           files: JqshuvPack-${{ matrix.version }}.X.zip
           loaders: minecraft
